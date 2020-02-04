@@ -1,0 +1,26 @@
+#titlebar-starter {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-left: 2em;
+  }
+}
+
+.titlebar-button {
+  border: $border-width solid transparent;
+  background-color: transparent;
+  padding: 0.2em;
+  &:hover {
+    border: $border-width solid $brand-clickable;
+  }
+
+  > .running-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
