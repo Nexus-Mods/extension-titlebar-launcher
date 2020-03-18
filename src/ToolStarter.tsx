@@ -96,7 +96,7 @@ function ToolStarter() {
   const { discovery, game, discoveredTools,
           primaryTool, toolsRunning } = useSelector(mapStateToProps);
 
-  const starters = toStarters(game, discovery, primaryTool, Object.values(discoveredTools));
+  const starters = toStarters(game, discovery, primaryTool, Object.values(discoveredTools || {}));
 
   return (
     <div id='titlebar-starter'>
