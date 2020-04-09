@@ -9,15 +9,17 @@
   "scripts": {
     "webpack": "webpack --config webpack.config.js --display-error-details --progress --profile --color",
     "installDev": "copyfiles -f dist/* ../../out/bundledPlugins/titlebar-launcher",
+    "bundle7z": "7z a -t7z titlebar-launcher.7z .\\dist\\index.js .\\dist\\info.json .\\dist\\titlebar-launcher.scss",
     "build": "npm run webpack && copyfiles -f titlebar-launcher.scss dist && copyfiles -f src/images/* dist && extractInfo",
     "buildDev": "npm run build && npm run installDev"
   },
   "author": "Black Tree Gaming Ltd.",
   "license": "GPL-3.0",
   "devDependencies": {
+    "7z-bin": "Nexus-Mods/7z-bin",
+    "@types/node": "^13.5.1",
     "@types/react": "^16.9.19",
     "@types/react-bootstrap": "^0.32.20",
-    "@types/node": "^13.5.1",
     "copyfiles": "^2.2.0",
     "memoize-one": "^5.1.1",
     "react-redux": "^7.1.3",
