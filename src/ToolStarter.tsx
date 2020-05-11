@@ -80,7 +80,7 @@ function ToolStarterIcon(props: { tool: types.IStarterInfo, running: boolean }) 
       onClick={startCB}
       disabled={props.running}
     >
-      <ToolIcon imageUrl={props.tool.iconPath} />
+      <ToolIcon imageUrl={`${props.tool.iconOutPath}?${(props.tool as any).timestamp || 0}`} altUrl={props.tool.iconPath} />
       {props.running ? <Spinner className='running-overlay' /> : null}
     </Button>
   );
