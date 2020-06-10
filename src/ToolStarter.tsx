@@ -59,8 +59,14 @@ function starterMemoizer(game: types.IGameStored,
     .filter(tool => tool.id !== primaryTool)
     .map(toolDiscovery => {
       const tool = game.supportedTools.find(iter => iter.id === toolDiscovery.id);
-      return toStarterInfo(game, discovery, tool, toolDiscovery);
-    });
+      try {
+        return toStarterInfo(game, discovery, tool, toolDiscovery);
+      } catch (err) {
+        // not the job of this extension to report this
+        return undefined;
+      }
+    })
+    .filter(iter => iter !== undefined);
 }
 
 function ToolStarterIcon(props: { tool: types.IStarterInfo, running: boolean }) {
