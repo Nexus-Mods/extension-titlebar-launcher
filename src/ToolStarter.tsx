@@ -57,6 +57,11 @@ function starterMemoizer(game: types.IGameStored,
                          tools: types.IDiscoveredTool[]) {
   return tools
     .filter(tool => tool.id !== primaryTool)
+    .sort((lhs: any, rhs: any) => {
+      const tlhs = lhs.timestamp ?? 0;
+      const trhs = rhs.timestamp ?? 0;
+      return tlhs - trhs;
+    })
     .map(toolDiscovery => {
       const tool = game.supportedTools.find(iter => iter.id === toolDiscovery.id);
       try {
