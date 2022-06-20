@@ -100,6 +100,7 @@ function ToolStarterIcon(props: IToolStarterIconProps) {
     <ToolIcon
       t={api.translate}
       valid={true}
+      item={props.tool}
       isPrimary={props.tool.id === primaryTool}
       imageUrl={props.iconLocation}
       onRun={startCB}
@@ -136,7 +137,7 @@ function ToolStarter() {
       setToolImages(imageMap);
     };
     getImagePath();
-  }, [toolImages]);
+  }, [discoveredTools]);
   if (!addToTitleBar) {
     return null;
   }
