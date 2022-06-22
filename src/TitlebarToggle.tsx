@@ -16,6 +16,9 @@ export default function TitlebarToggle() {
   const { gameMode, addToTitleBar } = useSelector(mapStateToProps);
   const onToggle = React.useCallback(() => {
     context.api.store?.dispatch(setAddToTitleBar(gameMode, !addToTitleBar));
+    if (!addToTitleBar === true) {
+      this.context.api.events.emit('analytics-track-click-event', 'Tools', 'Added to Titlebar');
+    }
   }, [addToTitleBar, gameMode]);
   if (!gameMode) {
     return null;
