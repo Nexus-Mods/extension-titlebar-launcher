@@ -1,7 +1,6 @@
 import memoize from 'memoize-one';
 import * as path from 'path';
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { fs, selectors, Spinner, ToolIcon, types, util } from 'vortex-api';
 

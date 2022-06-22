@@ -2819,8 +2819,8 @@ vm-browserify@^1.0.1:
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
 vortex-api@Nexus-Mods/vortex-api:
-  version "1.6.0-r1"
-  resolved "https://codeload.github.com/Nexus-Mods/vortex-api/tar.gz/30683d51f7dede3b9f7865e843ccb4a85cccd018"
+  version "1.6.0-r2"
+  resolved "https://codeload.github.com/Nexus-Mods/vortex-api/tar.gz/7e6c6f2541670a1bea088aefdba375fcc068ab1f"
 
 watchpack-chokidar2@^2.0.0:
   version "2.0.0"
