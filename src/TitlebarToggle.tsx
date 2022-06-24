@@ -21,13 +21,14 @@ export default function TitlebarToggle() {
       context.api.events.emit('analytics-track-click-event', 'Tools', 'Added to Titlebar');
     }
   }, [addToTitleBar]);
-  if (!gameMode || toolsOrder.length === 0) {
+  if (!gameMode) {
     return null;
   }
   return (
     <div id='titlebar-tools-toggle-container'>
       <p className='titlebar-tools-toggle-text'>{t('Enable toolbar')}</p>
       <Toggle
+        disabled={toolsOrder.length === 0}
         className='titlebar-tools-toggle'
         checked={addToTitleBar}
         onToggle={onToggle}
