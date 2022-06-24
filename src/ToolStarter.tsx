@@ -138,7 +138,7 @@ function ToolStarter() {
     };
     getImagePath();
   }, [discoveredTools]);
-  if (!addToTitleBar) {
+  if (!addToTitleBar || toolsOrder.length === 0) {
     return null;
   }
   return (
