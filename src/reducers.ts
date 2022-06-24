@@ -4,15 +4,11 @@ import * as actions from './actions';
 const reducer: types.IReducerSpec = {
   reducers: {
     [actions.setAddToTitleBar as any]: (state, payload) => {
-      const { gameId, addToTitleBar } = payload;
-      return util.setSafe(state, ['tools', 'addToolsToTitleBar', gameId], addToTitleBar);
+      const { addToTitleBar } = payload;
+      return util.setSafe(state, ['tools', 'addToolsToTitleBar'], addToTitleBar);
     },
   },
-  defaults: {
-    tools: {
-      addToolsToTitleBar: false,
-    },
-  },
+  defaults: {},
 };
 
 export default reducer;

@@ -28,3 +28,11 @@
     }
   }
 }
+
+#titlebar-tools-toggle-container {
+  display: flex;
+  flex-direction: row;
+  .titlebar-tools-toggle-text {
+    margin-right: .5em;
+  }
+}

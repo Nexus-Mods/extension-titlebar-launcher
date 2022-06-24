@@ -15,21 +15,23 @@ export default function TitlebarToggle() {
   const context = React.useContext(MainContext);
   const { gameMode, addToTitleBar } = useSelector(mapStateToProps);
   const onToggle = React.useCallback(() => {
-    context.api.store.dispatch(setAddToTitleBar(gameMode, !addToTitleBar));
+    context.api.store.dispatch(setAddToTitleBar(!addToTitleBar));
     if (!addToTitleBar === true) {
       context.api.events.emit('analytics-track-click-event', 'Tools', 'Added to Titlebar');
     }
-  }, [addToTitleBar, gameMode]);
+  }, [addToTitleBar]);
   if (!gameMode) {
     return null;
   }
   return (
-    <Toggle
-      checked={addToTitleBar}
-      onToggle={onToggle}
-    >
-      {t('Enable toolbar')}
-    </Toggle>
+    <div id='titlebar-tools-toggle-container'>
+      <p className='titlebar-tools-toggle-text'>{t('Enable toolbar')}</p>
+      <Toggle
+        className='titlebar-tools-toggle'
+        checked={addToTitleBar}
+        onToggle={onToggle}
+      />
+    </div>
   )
 }
 
@@ -45,6 +47,6 @@ function mapStateToProps(state: types.IState): IConnectedProps {
   return {
     gameMode: game.id,
     addToTitleBar: util.getSafe(state,
-      ['settings', 'interface', 'tools', 'addToolsToTitleBar', game.id], false),
+      ['settings', 'interface', 'tools', 'addToolsToTitleBar'], false),
   };
 }

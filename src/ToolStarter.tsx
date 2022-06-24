@@ -168,7 +168,7 @@ function mapStateToProps(state: types.IState): IConnectedProps {
 
   return {
     addToTitleBar: util.getSafe(state,
-      ['settings', 'interface', 'tools', 'addToolsToTitleBar', game.id], false),
+      ['settings', 'interface', 'tools', 'addToolsToTitleBar'], false),
     toolsOrder: util.getSafe(state,
       ['settings', 'interface', 'tools', 'order', game.id], []),
     game,
