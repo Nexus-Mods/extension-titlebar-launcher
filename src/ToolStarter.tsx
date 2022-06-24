@@ -92,7 +92,7 @@ function ToolStarterIcon(props: IToolStarterIconProps) {
   }, [props.tool]);
 
   const startCB = React.useCallback(() => {
-    this.context.api.events.emit('analytics-track-click-event', 'Tools', 'Manually ran tool');
+    api.events.emit('analytics-track-click-event', 'Tools', 'Manually ran tool');
     util.StarterInfo.run(props.tool as any, api, onShowError);
   }, [props]);
 
