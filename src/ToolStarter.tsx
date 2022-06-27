@@ -98,6 +98,7 @@ function ToolStarterIcon(props: IToolStarterIconProps) {
 
   return valid ? (
     <ToolIcon
+      classes={['fade-in']}
       t={api.translate}
       valid={true}
       item={props.tool}

@@ -1,20 +1,38 @@
+// Thanks Mass
+@keyframes vortexStickyfadeInRight {
+  0% {
+      opacity: 0;
+      transform: translateX(100%)
+  }
+
+  to {
+      opacity: 1;
+      transform: translateX(0)
+  }
+}
+
 #titlebar-starter {
   -webkit-app-region: no-drag;
   background-color: $brand-menu;
   border-right: $border-width solid $border-color;
   height: 100%;
-  min-width: 20em;
-  width: auto;
+  min-width: 4.66em;
+  // transition: width .800s; Unfortunately this won't work due to DynDiv
   overflow-y: hidden;
-  display: inline-flex;
-  align-content: flex-start;
-  align-items: center;
-  flex-flow: column wrap;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
 
   > * {
-    margin-top: 0.66em;
-    margin-left: 0.66em;
+    margin: 0.66em;
     position: relative;
+  }
+
+  .fade-in {
+    animation: vortexStickyfadeInRight 0.8s;
+    animation-delay: 100ms;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
   }
 
   .starter-tool-icon-container {
