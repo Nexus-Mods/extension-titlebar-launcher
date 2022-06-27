@@ -7,14 +7,13 @@
   width: auto;
   overflow-y: hidden;
   display: inline-flex;
-  gap: 10px;
   align-content: flex-start;
   align-items: center;
   flex-flow: column wrap;
 
   > * {
-    margin-top: 0.5em;
-    margin-left: 1em;
+    margin-top: 0.66em;
+    margin-left: 0.66em;
     position: relative;
   }
 
