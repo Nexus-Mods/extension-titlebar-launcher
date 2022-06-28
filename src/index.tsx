@@ -36,25 +36,25 @@ function init(context: types.IExtensionContext) {
     condition: (props: any): boolean => {
       return selectors.activeGameId(context.api.store.getState()) !== undefined;
     },
-    props: () => ({
+    props: {
       onGetStarters: (game: types.IGameStored,
         discovery: types.IDiscoveryResult,
         tools: types.IDiscoveredTool[]) => toStarters(game, discovery, tools),
       onGetValidStarters: (game: types.IGameStored,
         discovery: types.IDiscoveryResult,
         tools: types.IDiscoveredTool[]) => getValidStarters(game, discovery, tools)
-    })
+    }
   });
 
   (context as any).registerDynDiv('starter-dashlet-tools-controls', TitleBarToggle, {
     condition: (props: any): boolean => {
       return selectors.activeGameId(context.api.store.getState()) !== undefined;
     },
-    props: () => ({
+    props: {
       onGetValidStarters: (game: types.IGameStored,
                            discovery: types.IDiscoveryResult,
                            tools: types.IDiscoveredTool[]) => getValidStarters(game, discovery, tools)
-    })
+    }
   });
 
   context.once(() => {
