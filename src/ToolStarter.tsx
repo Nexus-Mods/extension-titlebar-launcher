@@ -1,4 +1,3 @@
-import memoize from 'memoize-one';
 import * as path from 'path';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -15,12 +14,23 @@ interface IConnectedProps {
   discoveredTools: { [id: string]: types.IDiscoveredTool };
   primaryTool: string;
   toolsRunning: { [exeId: string]: types.IRunningTool };
+  mods: { [modId: string]: types.IMod };
+}
+
+interface IToolStarterProps {
+  onGetStarters: (game: types.IGameStored,
+    discovery: types.IDiscoveryResult,
+    tools: types.IDiscoveredTool[]) => types.IStarterInfo[];
+  onGetValidStarters: (game: types.IGameStored,
+    discovery: types.IDiscoveryResult,
+    tools: types.IDiscoveredTool[]) => Promise<string[]>;
 }
 
 interface IToolStarterIconProps {
   tool: types.IStarterInfo;
   running: boolean;
   iconLocation: string;
+  valid: boolean;
 }
 
 function toolIconRW(gameId: string, toolId: string) {
@@ -47,49 +57,13 @@ async function toolIcon(gameId: string, extensionPath: string,
   }
 }
 
-function toStarterInfo(game: types.IGameStored,
-                       gameDiscovery: types.IDiscoveryResult,
-                       tool: types.IToolStored,
-                       toolDiscovery: types.IDiscoveredTool): types.IStarterInfo {
-  return new util.StarterInfo(game, gameDiscovery, tool, toolDiscovery);
-
-}
-
-function starterMemoizer(game: types.IGameStored,
-                         discovery: types.IDiscoveryResult,
-                         primaryTool: string,
-                         tools: types.IDiscoveredTool[]): types.IStarterInfo[] {
-  return tools.filter(tool => tool.id !== undefined)
-    .map(toolDiscovery => {
-      const tool = game.supportedTools.find(iter => iter.id === toolDiscovery.id);
-      try {
-        return toStarterInfo(game, discovery, tool, toolDiscovery);
-      } catch (err) {
-        // not the job of this extension to report this
-        return undefined;
-      }
-    })
-    .filter(iter => iter !== undefined);
-}
-
 function ToolStarterIcon(props: IToolStarterIconProps) {
+  const { valid } = props;
   const { api }: { api: types.IExtensionApi } = React.useContext(MainContext);
   const { primaryTool } = useSelector(mapStateToProps);
   const onShowError = React.useCallback((message: string, details: any, allowReport: boolean) => {
     api.showErrorNotification(message, details, { allowReport });
   }, [api]);
-  const [valid, setValid] = React.useState(false);
-  React.useEffect(() => {
-    const isValid = async () => {
-      try {
-        await fs.statAsync(props.tool.exePath);
-        setValid(true);
-      } catch (err) {
-        setValid(false);
-      }
-    };
-    isValid();
-  }, [props.tool]);
 
   const startCB = React.useCallback(() => {
     api.events.emit('analytics-track-click-event', 'Tools', 'Manually ran tool');
@@ -111,24 +85,28 @@ function ToolStarterIcon(props: IToolStarterIconProps) {
   ) : null;
 }
 
-const toStarters = memoize(starterMemoizer);
-
 function makeExeId(exePath: string): string {
   return path.basename(exePath).toLowerCase();
 }
 
-function ToolStarter() {
-  const { addToTitleBar, discovery, game, discoveredTools,
-          primaryTool, toolsRunning, toolsOrder } = useSelector(mapStateToProps);
+function ToolStarter(props: IToolStarterProps) {
+  const { onGetStarters, onGetValidStarters } = props;
+  const { addToTitleBar, discovery, game, discoveredTools, mods,
+          toolsRunning, toolsOrder, primaryTool } = useSelector(mapStateToProps);
 
   const [toolImages, setToolImages] = React.useState({});
-  const starters = toStarters(game, discovery, primaryTool, Object.values(discoveredTools || {}));
+  const [validStarters, setValidStarters] = React.useState([]);
+  const starters = onGetStarters(game, discovery, Object.values(discoveredTools) || []);
   const idxOfTool = (tool) => {
     const idx = toolsOrder.findIndex(id => tool.id === id);
     return idx !== -1 ? idx : starters.length;
   };
   starters.sort((lhs, rhs) => idxOfTool(lhs) - idxOfTool(rhs));
   React.useEffect(() => {
+    const hasValidTools = async () => {
+      const starters = await onGetValidStarters(game, discovery, Object.values(discoveredTools));
+      setValidStarters(starters);
+    }
     const getImagePath = async () => {
       const imageMap = {};
       for (const starter of starters) {
@@ -136,10 +114,11 @@ function ToolStarter() {
                                               starter.id, starter.logoName);
       }
       setToolImages(imageMap);
+      hasValidTools();
     };
     getImagePath();
-  }, [discoveredTools]);
-  if (!addToTitleBar || toolsOrder.length === 0) {
+  }, [primaryTool, discoveredTools, toolsOrder, discovery, mods]);
+  if (!addToTitleBar || validStarters.length === 0) {
     return null;
   }
   return (
@@ -150,6 +129,7 @@ function ToolStarter() {
 
         return (
           <ToolStarterIcon
+            valid={validStarters.includes(starter.id)}
             running={running}
             key={idx}
             tool={starter}
@@ -181,6 +161,9 @@ function mapStateToProps(state: types.IState): IConnectedProps {
       ? util.getSafe(state, ['settings', 'interface', 'primaryTool', game.id], undefined)
       : undefined,
     toolsRunning: state.session.base.toolsRunning,
+    mods: game !== undefined
+    ? util.getSafe(state, ['persistent', 'mods', game.id], emptyObj)
+    : emptyObj,
   };
 }
 
