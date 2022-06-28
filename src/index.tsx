@@ -18,6 +18,10 @@ async function ValidStarters(game: types.IGameStored,
   const starters = toStarters(game, discovery, tools);
   const validStarters: string[] = [];
   for (const starter of starters) {
+    if (starter?.exePath === undefined) {
+      // catch block below could catch this, but why waste time.
+      continue;
+    }
     try {
       const exePath = path.isAbsolute(starter.exePath)
         ? starter.exePath : path.join(discovery.path, starter.exePath);
