@@ -12,10 +12,7 @@ export function starterMemoizer(game: types.IGameStored,
                                 tools: types.IDiscoveredTool[]): types.IStarterInfo[] {
   const result = tools.filter(tool => tool.id !== undefined)
     .map(toolDiscovery => {
-      const tool = game.supportedTools!.find(iter => iter.id === toolDiscovery.id);
-      if (tool === undefined) {
-        return undefined;
-      }
+      const tool = game.supportedTools.find(iter => iter.id === toolDiscovery.id);
       try {
         return toStarterInfo(game, discovery, tool, toolDiscovery);
       } catch (err) {
