@@ -61,6 +61,9 @@ function ToolStarterIcon(props: IToolStarterIconProps) {
   const { valid } = props;
   const { api }: { api: types.IExtensionApi } = React.useContext(MainContext);
   const { primaryTool } = useSelector(mapStateToProps);
+  if (!primaryTool) {
+    return null;
+  }
   const onShowError = React.useCallback((message: string, details: any, allowReport: boolean) => {
     api.showErrorNotification(message, details, { allowReport });
   }, [api]);
@@ -118,7 +121,7 @@ function ToolStarter(props: IToolStarterProps) {
     };
     getImagePath();
   }, [primaryTool, discoveredTools, toolsOrder, discovery, mods]);
-  if (!addToTitleBar || validStarters.length === 0) {
+  if (!game || !discovery || !addToTitleBar || validStarters.length === 0) {
     return null;
   }
   return (
@@ -147,6 +150,18 @@ function mapStateToProps(state: types.IState): IConnectedProps {
   const game: types.IGameStored = selectors.currentGame(state);
   const discovery: types.IDiscoveryResult = selectors.currentGameDiscovery(state);
 
+  if (!game?.id || !discovery?.path) {
+    return {
+      addToTitleBar: false,
+      toolsOrder: [],
+      game: undefined,
+      discovery: undefined,
+      discoveredTools: emptyObj,
+      primaryTool: undefined,
+      toolsRunning: emptyObj,
+      mods: emptyObj,
+    };
+  }
   return {
     addToTitleBar: util.getSafe(state,
       ['settings', 'interface', 'tools', 'addToolsToTitleBar'], false),

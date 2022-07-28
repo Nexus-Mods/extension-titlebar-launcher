@@ -1,6 +1,6 @@
 {
   "name": "titlebar-launcher",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "adds a launcher bar on the titlebar",
   "main": "./out/index.js",
   "vortex": {
