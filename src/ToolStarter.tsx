@@ -61,9 +61,7 @@ function ToolStarterIcon(props: IToolStarterIconProps) {
   const { valid } = props;
   const { api }: { api: types.IExtensionApi } = React.useContext(MainContext);
   const { primaryTool } = useSelector(mapStateToProps);
-  if (!primaryTool) {
-    return null;
-  }
+
   const onShowError = React.useCallback((message: string, details: any, allowReport: boolean) => {
     api.showErrorNotification(message, details, { allowReport });
   }, [api]);
