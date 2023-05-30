@@ -1,22 +1,19 @@
-$titlebar-height: 104px !default;
 $titlebar-rows: 2 !default;
-
-$titlebar-button-spacing: calc((#{$titlebar-height} - (#{$tools-icon-size} + #{$tools-border-width} * 2) * #{$titlebar-rows}) / (#{$titlebar-rows} + 1));
 
 #titlebar-starter {
   -webkit-app-region: no-drag;
   background-color: $brand-menu;
   border-right: $border-width solid $border-color;
-  height: $titlebar-height;
+  height: 100%;
   overflow-y: hidden;
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat($titlebar-rows, auto);
   align-items: center;
 
-  padding: $titlebar-button-spacing;
-  gap: $titlebar-button-spacing;
-  align-items: normal;
+  padding: 0 $half-gutter;
+  gap: $half-gutter;
+  align-items: center;
 
   .starter-tool-icon-container {
     > .running-overlay {

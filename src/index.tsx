@@ -13,8 +13,8 @@ import { starterMemoizer } from './util';
 const toStarters = memoize(starterMemoizer);
 const getValidStarters = memoize(ValidStarters);
 async function ValidStarters(game: types.IGameStored,
-                                discovery: types.IDiscoveryResult,
-                                tools: types.IDiscoveredTool[]): Promise<string[]> {
+                             discovery: types.IDiscoveryResult,
+                             tools: types.IDiscoveredTool[]): Promise<string[]> {
   const starters = toStarters(game, discovery, tools);
   const validStarters: string[] = [];
   for (const starter of starters) {
